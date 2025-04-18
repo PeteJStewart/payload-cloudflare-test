@@ -1,0 +1,53 @@
+{
+  "name": "payload-cloudflare-test",
+  "version": "1.0.0",
+  "description": "A blank template to get started with Payload 3.0",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "build": "cross-env NODE_OPTIONS=--no-deprecation next build",
+    "dev": "cross-env NODE_OPTIONS=--no-deprecation next dev -p 3001",
+    "devsafe": "rm -rf .next && cross-env NODE_OPTIONS=--no-deprecation next dev",
+    "generate:importmap": "cross-env NODE_OPTIONS=--no-deprecation payload generate:importmap",
+    "generate:types": "cross-env NODE_OPTIONS=--no-deprecation payload generate:types",
+    "lint": "cross-env NODE_OPTIONS=--no-deprecation next lint",
+    "payload": "cross-env NODE_OPTIONS=--no-deprecation payload",
+    "start": "cross-env NODE_OPTIONS=--no-deprecation next start",
+    "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
+    "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
+    "upload": "opennextjs-cloudflare build && opennextjs-cloudflare upload",
+    "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts"
+  },
+  "dependencies": {
+    "@opennextjs/cloudflare": "1.0.0-beta.3",
+    "@payloadcms/db-sqlite": "3.35.0",
+    "@payloadcms/next": "3.35.0",
+    "@payloadcms/payload-cloud": "3.35.0",
+    "@payloadcms/richtext-lexical": "3.35.0",
+    "@payloadcms/storage-s3": "3.35.0",
+    "@payloadcms/translations": "3.35.0",
+    "cross-env": "^7.0.3",
+    "graphql": "^16.8.1",
+    "libsql": "^0.5.6",
+    "next": "15.3.0",
+    "payload": "3.35.0",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "sharp": "0.32.6"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3.2.0",
+    "@types/node": "^22.5.4",
+    "@types/react": "19.1.0",
+    "@types/react-dom": "19.1.2",
+    "eslint": "^9.16.0",
+    "eslint-config-next": "15.3.0",
+    "prettier": "^3.4.2",
+    "typescript": "5.7.3",
+    "wrangler": "^4.12.0"
+  },
+  "engines": {
+    "node": "^18.20.2 || >=20.9.0",
+    "pnpm": "^8 || ^9 || ^10"
+  }
+}
