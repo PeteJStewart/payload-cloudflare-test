@@ -69,22 +69,14 @@ export interface Config {
   collections: {
     users: User;
     media: Media;
-    editions: Edition;
-    'edition-elements': EditionElement;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
-  collectionsJoins: {
-    'edition-elements': {
-      editions: 'editions';
-    };
-  };
+  collectionsJoins: {};
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
-    editions: EditionsSelect<false> | EditionsSelect<true>;
-    'edition-elements': EditionElementsSelect<false> | EditionElementsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -159,35 +151,6 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "editions".
- */
-export interface Edition {
-  id: string;
-  title: string;
-  slug: string;
-  editionElements?: (string | EditionElement)[] | null;
-  updatedAt: string;
-  createdAt: string;
-  _status?: ('draft' | 'published') | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "edition-elements".
- */
-export interface EditionElement {
-  id: string;
-  title?: string | null;
-  editions?: {
-    docs?: (string | Edition)[];
-    hasNextPage?: boolean;
-    totalDocs?: number;
-  };
-  updatedAt: string;
-  createdAt: string;
-  _status?: ('draft' | 'published') | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
@@ -200,14 +163,6 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'media';
         value: string | Media;
-      } | null)
-    | ({
-        relationTo: 'editions';
-        value: string | Edition;
-      } | null)
-    | ({
-        relationTo: 'edition-elements';
-        value: string | EditionElement;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -283,29 +238,6 @@ export interface MediaSelect<T extends boolean = true> {
   height?: T;
   focalX?: T;
   focalY?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "editions_select".
- */
-export interface EditionsSelect<T extends boolean = true> {
-  title?: T;
-  slug?: T;
-  editionElements?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  _status?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "edition-elements_select".
- */
-export interface EditionElementsSelect<T extends boolean = true> {
-  title?: T;
-  editions?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
