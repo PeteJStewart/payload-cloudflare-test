@@ -1,15 +1,20 @@
 // storage-adapter-import-placeholder
 import { sqliteAdapter } from '@payloadcms/db-sqlite'
-import { payloadCloudPlugin } from '@payloadcms/payload-cloud'
-import { lexicalEditor } from '@payloadcms/richtext-lexical'
+import { defaultLexical } from '@/fields/defaultLexical'
 import path from 'path'
 import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
+import { en } from '@payloadcms/translations/languages/en'
+import { pt } from '@payloadcms/translations/languages/pt'
 // import sharp from 'sharp'
-import { s3Storage } from '@payloadcms/storage-s3'
 
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
+import { Pages } from './collections/Pages'
+import { Articles } from './collections/Articles'
+import { Categories } from './collections/Categories'
+import { plugins } from './plugins'
+import { Nav } from './globals/Navigation'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -20,9 +25,44 @@ export default buildConfig({
     importMap: {
       baseDir: path.resolve(dirname),
     },
+    livePreview: {
+      breakpoints: [
+        {
+          label: 'Mobile',
+          name: 'mobile',
+          width: 375,
+          height: 667,
+        },
+        {
+          label: 'Tablet',
+          name: 'tablet',
+          width: 768,
+          height: 1024,
+        },
+        {
+          label: 'Desktop',
+          name: 'desktop',
+          width: 1440,
+          height: 900,
+        },
+      ],
+    },
   },
-  collections: [Users, Media],
-  editor: lexicalEditor(),
+  collections: [
+    Users,
+    Media,
+    Pages,
+    Articles,
+    Categories,
+  ],
+  globals: [
+    Nav,
+  ],
+  editor: defaultLexical,
+  i18n: {
+    supportedLanguages: {en, pt},
+    fallbackLanguage: 'en',
+  },
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
@@ -37,35 +77,19 @@ export default buildConfig({
   localization: {
     locales: [
       {
-        code: 'en-GB',
-        label: 'English (GB)',
+        label: 'English',
+        code: 'en',
       },
       {
-        code: 'de-CH',
-        label: 'German (CH)',
+        label: 'Cymraeg',
+        code: 'cy',
       },
     ],
     defaultLocale: 'en', // required
+    fallback: true, // defaults to true
   },
   //sharp,
   plugins: [
-    payloadCloudPlugin(),
-    s3Storage({
-      bucket: process.env.S3_BUCKET!,
-      clientUploads: true,
-      collections: {
-        media: true,
-      },
-      config: {
-        endpoint: process.env.S3_ENDPOINT,
-        region: process.env.S3_REGION!,
-        forcePathStyle: true,
-        credentials: {
-          accessKeyId: process.env.S3_ACCESS_KEY_ID!,
-          secretAccessKey: process.env.S3_SECRET_ACCESS_KEY!,
-        },
-      },
-    }),
-    // storage-adapter-placeholder
+    ...plugins,
   ],
 })
